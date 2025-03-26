@@ -1,4 +1,3 @@
-
 import { format, addYears, addMonths, addDays } from 'date-fns';
 
 // Defining the types for our sanskars
@@ -13,6 +12,7 @@ export interface Sanskar {
 export interface UserData {
   name: string;
   email: string;
+  phone?: string;
   gender: 'male' | 'female' | 'other';
   dob: Date;
 }
