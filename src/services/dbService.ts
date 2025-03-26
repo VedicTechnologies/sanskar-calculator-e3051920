@@ -1,6 +1,6 @@
 
 import { UserData, Sanskar } from '../utils/sanskarCalculator';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 interface StoredData extends UserData {
   id: string;

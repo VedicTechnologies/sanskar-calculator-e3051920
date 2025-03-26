@@ -1,6 +1,6 @@
 
 import { UserData, Sanskar } from '../utils/sanskarCalculator';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 // In a real application, this would be connected to a backend service
 // For now, we'll simulate a successful email sending
