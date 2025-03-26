@@ -8,21 +8,27 @@ import { format } from 'date-fns';
 declare module 'jspdf' {
   interface jsPDF {
     autoTable: (options: any) => jsPDF;
-    internal: {
-      getNumberOfPages: () => number;
-    };
   }
 }
 
 export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => {
   const doc = new jsPDF();
   
+  // Add logo
+  const favicon = new Image();
+  favicon.src = '/favicon.ico';
+  doc.addImage(favicon, 'PNG', 14, 10, 20, 20);
+  
   // Add decorative header
   doc.setFillColor(212, 175, 55); // Sanskrit gold color
   doc.rect(0, 0, 210, 25, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(22);
-  doc.text('16 Sanskars Calculation', 105, 15, { align: 'center' });
+  doc.text('Vedic Academy 16 Sanskars', 105, 15, { align: 'center' });
+  
+  // Add tagline
+  doc.setFontSize(14);
+  doc.text('Know Correct Time for Each Sanskar', 105, 23, { align: 'center' });
   
   // Add user information
   doc.setTextColor(0, 0, 0);
@@ -32,16 +38,28 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
   doc.setFontSize(12);
   doc.text(`Name: ${userData.name}`, 14, 45);
   doc.text(`Email: ${userData.email}`, 14, 52);
-  doc.text(`Gender: ${userData.gender}`, 14, 59);
-  doc.text(`Date of Birth: ${format(new Date(userData.dob), 'MMMM dd, yyyy')}`, 14, 66);
-  
-  // Add current date
-  doc.text(`Generated on: ${format(new Date(), 'MMMM dd, yyyy')}`, 14, 73);
-  
-  // Add a decorative line
-  doc.setDrawColor(212, 175, 55);
-  doc.setLineWidth(0.5);
-  doc.line(14, 80, 196, 80);
+  if (userData.phone) {
+    doc.text(`Phone: ${userData.phone}`, 14, 59);
+    doc.text(`Gender: ${userData.gender}`, 14, 66);
+    doc.text(`Date of Birth: ${format(new Date(userData.dob), 'MMMM dd, yyyy')}`, 14, 73);
+    // Add current date
+    doc.text(`Generated on: ${format(new Date(), 'MMMM dd, yyyy')}`, 14, 80);
+    
+    // Add a decorative line
+    doc.setDrawColor(212, 175, 55);
+    doc.setLineWidth(0.5);
+    doc.line(14, 87, 196, 87);
+  } else {
+    doc.text(`Gender: ${userData.gender}`, 14, 59);
+    doc.text(`Date of Birth: ${format(new Date(userData.dob), 'MMMM dd, yyyy')}`, 14, 66);
+    // Add current date
+    doc.text(`Generated on: ${format(new Date(), 'MMMM dd, yyyy')}`, 14, 73);
+    
+    // Add a decorative line
+    doc.setDrawColor(212, 175, 55);
+    doc.setLineWidth(0.5);
+    doc.line(14, 80, 196, 80);
+  }
   
   // Prepare data for table
   const tableData = sanskars.map(sanskar => [
@@ -51,9 +69,12 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
     sanskar.calculatedAge
   ]);
   
+  // Calculate start position based on whether phone is present
+  const startY = userData.phone ? 92 : 85;
+  
   // Add the table
   doc.autoTable({
-    startY: 85,
+    startY: startY,
     head: [['Sanskar', 'Description', 'Calculated Date', 'Age']],
     body: tableData,
     theme: 'grid',
@@ -72,7 +93,7 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
   });
   
   // Add a footer
-  const pageCount = doc.internal.getNumberOfPages();
+  const pageCount = doc.internal.pages.length - 1;
   doc.setFontSize(10);
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -94,12 +115,21 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
 export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   const doc = new jsPDF();
   
+  // Add logo
+  const favicon = new Image();
+  favicon.src = '/favicon.ico';
+  doc.addImage(favicon, 'PNG', 14, 10, 20, 20);
+  
   // Add decorative header
   doc.setFillColor(212, 175, 55); // Sanskrit gold color
   doc.rect(0, 0, 210, 25, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(22);
-  doc.text('16 Sanskars Calculation', 105, 15, { align: 'center' });
+  doc.text('Vedic Academy 16 Sanskars', 105, 15, { align: 'center' });
+  
+  // Add tagline
+  doc.setFontSize(14);
+  doc.text('Know Correct Time for Each Sanskar', 105, 23, { align: 'center' });
   
   // Add user information
   doc.setTextColor(0, 0, 0);
@@ -109,16 +139,28 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   doc.setFontSize(12);
   doc.text(`Name: ${userData.name}`, 14, 45);
   doc.text(`Email: ${userData.email}`, 14, 52);
-  doc.text(`Gender: ${userData.gender}`, 14, 59);
-  doc.text(`Date of Birth: ${format(new Date(userData.dob), 'MMMM dd, yyyy')}`, 14, 66);
-  
-  // Add current date
-  doc.text(`Generated on: ${format(new Date(), 'MMMM dd, yyyy')}`, 14, 73);
-  
-  // Add a decorative line
-  doc.setDrawColor(212, 175, 55);
-  doc.setLineWidth(0.5);
-  doc.line(14, 80, 196, 80);
+  if (userData.phone) {
+    doc.text(`Phone: ${userData.phone}`, 14, 59);
+    doc.text(`Gender: ${userData.gender}`, 14, 66);
+    doc.text(`Date of Birth: ${format(new Date(userData.dob), 'MMMM dd, yyyy')}`, 14, 73);
+    // Add current date
+    doc.text(`Generated on: ${format(new Date(), 'MMMM dd, yyyy')}`, 14, 80);
+    
+    // Add a decorative line
+    doc.setDrawColor(212, 175, 55);
+    doc.setLineWidth(0.5);
+    doc.line(14, 87, 196, 87);
+  } else {
+    doc.text(`Gender: ${userData.gender}`, 14, 59);
+    doc.text(`Date of Birth: ${format(new Date(userData.dob), 'MMMM dd, yyyy')}`, 14, 66);
+    // Add current date
+    doc.text(`Generated on: ${format(new Date(), 'MMMM dd, yyyy')}`, 14, 73);
+    
+    // Add a decorative line
+    doc.setDrawColor(212, 175, 55);
+    doc.setLineWidth(0.5);
+    doc.line(14, 80, 196, 80);
+  }
   
   // Prepare data for table
   const tableData = sanskars.map(sanskar => [
@@ -128,9 +170,12 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
     sanskar.calculatedAge
   ]);
   
+  // Calculate start position based on whether phone is present
+  const startY = userData.phone ? 92 : 85;
+  
   // Add the table
   doc.autoTable({
-    startY: 85,
+    startY: startY,
     head: [['Sanskar', 'Description', 'Calculated Date', 'Age']],
     body: tableData,
     theme: 'grid',
@@ -149,7 +194,7 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   });
   
   // Add a footer
-  const pageCount = doc.internal.getNumberOfPages();
+  const pageCount = doc.internal.pages.length - 1;
   doc.setFontSize(10);
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
