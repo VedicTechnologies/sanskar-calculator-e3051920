@@ -1,11 +1,10 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { UserData, Sanskar } from '@/utils/sanskarCalculator';
 import { downloadPDF } from '@/utils/pdfGenerator';
-import { sendEmailWithPDF } from '@/services/emailService';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { Download, Mail, ArrowLeft, Info } from 'lucide-react';
+import { Download, ArrowLeft, Info } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -54,19 +53,8 @@ const SanskarResults: React.FC<SanskarResultsProps> = ({
   pdfBase64, 
   onBack 
 }) => {
-  const [isSending, setIsSending] = useState(false);
-  
   const handleDownloadPDF = () => {
     downloadPDF(userData, sanskars);
-  };
-  
-  const handleSendEmail = async () => {
-    setIsSending(true);
-    try {
-      await sendEmailWithPDF(userData, sanskars, pdfBase64);
-    } finally {
-      setIsSending(false);
-    }
   };
   
   return (
@@ -100,15 +88,6 @@ const SanskarResults: React.FC<SanskarResultsProps> = ({
                 className="bg-sanskrit-gold hover:bg-sanskrit-deep transition-colors"
               >
                 <Download className="mr-2 h-4 w-4" /> Download PDF
-              </Button>
-              <Button 
-                onClick={handleSendEmail} 
-                disabled={isSending} 
-                variant="outline" 
-                className="border-sanskrit-gold text-sanskrit-deep hover:bg-sanskrit-gold/10"
-              >
-                <Mail className="mr-2 h-4 w-4" /> 
-                {isSending ? "Sending..." : "Email PDF"}
               </Button>
             </div>
           </div>
@@ -163,15 +142,6 @@ const SanskarResults: React.FC<SanskarResultsProps> = ({
           className="bg-sanskrit-gold hover:bg-sanskrit-deep transition-colors mx-2"
         >
           <Download className="mr-2 h-4 w-4" /> Download PDF
-        </Button>
-        <Button 
-          onClick={handleSendEmail} 
-          disabled={isSending} 
-          variant="outline" 
-          className="border-sanskrit-gold text-sanskrit-deep hover:bg-sanskrit-gold/10 mx-2"
-        >
-          <Mail className="mr-2 h-4 w-4" /> 
-          {isSending ? "Sending..." : "Email PDF"}
         </Button>
       </div>
     </div>
