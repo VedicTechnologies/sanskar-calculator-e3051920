@@ -14,12 +14,7 @@ declare module 'jspdf' {
 export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => {
   const doc = new jsPDF();
   
-  // Add logo
-  const favicon = new Image();
-  favicon.src = '/favicon.ico';
-  doc.addImage(favicon, 'PNG', 14, 10, 20, 20);
-  
-  // Add decorative header
+  // Add decorative header - removed favicon reference that was causing errors
   doc.setFillColor(212, 175, 55); // Sanskrit gold color
   doc.rect(0, 0, 210, 25, 'F');
   doc.setTextColor(255, 255, 255);
@@ -115,12 +110,7 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
 export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   const doc = new jsPDF();
   
-  // Add logo
-  const favicon = new Image();
-  favicon.src = '/favicon.ico';
-  doc.addImage(favicon, 'PNG', 14, 10, 20, 20);
-  
-  // Add decorative header
+  // Add decorative header - removed favicon reference that was causing errors
   doc.setFillColor(212, 175, 55); // Sanskrit gold color
   doc.rect(0, 0, 210, 25, 'F');
   doc.setTextColor(255, 255, 255);

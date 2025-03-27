@@ -6,6 +6,7 @@ import { UserData, Sanskar, calculateSanskarDates } from '@/utils/sanskarCalcula
 import { generatePDF } from '@/utils/pdfGenerator';
 import { saveToDatabase } from '@/services/dbService';
 import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 const Index = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -23,8 +24,13 @@ const Index = () => {
       // Generate PDF
       const pdfString = generatePDF(data, calculatedSanskars);
       
-      // Save to database
-      await saveToDatabase(data, calculatedSanskars, pdfString);
+      // Save to database - wrap in try/catch to prevent errors
+      try {
+        await saveToDatabase(data, calculatedSanskars, pdfString);
+      } catch (dbError) {
+        console.error('Error saving to database:', dbError);
+        // Non-critical error, we can continue
+      }
       
       // Update state
       setUserData(data);
@@ -33,6 +39,7 @@ const Index = () => {
       setShowResults(true);
     } catch (error) {
       console.error('Error processing data:', error);
+      toast.error('An error occurred while processing your data. Please try again.');
     } finally {
       setIsLoading(false);
     }
