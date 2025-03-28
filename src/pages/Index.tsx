@@ -59,7 +59,7 @@ const Index = () => {
       <div className="w-full max-w-4xl z-10">
         <div className="text-center mb-8 animate-entry" style={{ "--delay": "1" } as React.CSSProperties}>
           <h1 className="text-4xl sm:text-5xl font-medium text-sanskrit-deep mb-4">
-            Vedic Academy Sanskar Calculator
+            Sanskar Calculator by Vedic Academy
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Discover the auspicious timings for the sixteen sanskars based on your birth details
