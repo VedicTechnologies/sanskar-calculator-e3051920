@@ -1,69 +1,30 @@
-# Welcome to your Lovable project
+# Sanskar Calculator by Vedic Academy  
 
-## Project info
+**Sanskar Calculator** is a Vedic Dharma-based application that calculates and suggests auspicious dates for performing various Sanskars (sacraments) based on the user's Date of Birth (DOB). Developed by **Vedic Academy**, this tool helps users align their life events with ancient Vedic traditions.  
 
-**URL**: https://lovable.dev/projects/553ee08b-d87d-493a-a518-8183b20ebf8f
+## Features  
 
-## How can I edit this code?
+✅ **User Input:** Collects Name, Email, Phone Number, Gender, and Date of Birth.  
+✅ **Age-Based Sanskar Calculation:** Determines the appropriate time for different Sanskars based on Vedic principles.  
+✅ **PDF Download:** Users can download their personalized Sanskar dates as a PDF for easy reference.  
 
-There are several ways of editing your application.
+## How It Works  
 
-**Use Lovable**
+1. Enter your **personal details** (Name, Email, Phone Number, Gender, and DOB).  
+2. The system **calculates your age** and suggests Vedic Sanskar dates.  
+3. You can **view the suggested dates** based on traditional guidelines.  
+4. Option to **download the report as a PDF** for future use.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/553ee08b-d87d-493a-a518-8183b20ebf8f) and start prompting.
+## Live Demo
 
-Changes made via Lovable will be committed automatically to this repo.
+https://sanskar.vedicacademy.net
 
-**Use your preferred IDE**
+## Installation & Usage  
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+This app can be accessed via a web or mobile platform. Simply enter your details, and the system will generate your Sanskar dates instantly.  
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## About Vedic Academy  
 
-Follow these steps:
+Vedic Academy is dedicated to reviving ancient Vedic wisdom through digital solutions, helping individuals lead a spiritually aligned life.  
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/553ee08b-d87d-493a-a518-8183b20ebf8f) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+🔗 *For more information, visit our website* [vedicacademy.net]
