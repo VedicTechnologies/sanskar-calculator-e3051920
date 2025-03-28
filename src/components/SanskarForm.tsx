@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Check, ChevronsUpDown, Phone as PhoneIcon, Flag } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown, Phone as PhoneIcon} from "lucide-react";
 import { 
   Form, 
   FormControl, 
@@ -22,13 +22,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
+// import {
+//   Command,
+//   CommandEmpty,
+//   CommandGroup,
+//   CommandInput,
+//   CommandItem,
+// } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -39,28 +39,16 @@ import {
 } from "@/components/ui/popover";
 import { UserData } from '@/utils/sanskarCalculator';
 
-// Define the country data with phone codes
-const countries = [
-  { name: "India", code: "IN", phoneCode: "+91", flag: "🇮🇳" },
-  { name: "United States", code: "US", phoneCode: "+1", flag: "🇺🇸" },
-  { name: "United Kingdom", code: "GB", phoneCode: "+44", flag: "🇬🇧" },
-  { name: "Canada", code: "CA", phoneCode: "+1", flag: "🇨🇦" },
-  { name: "Australia", code: "AU", phoneCode: "+61", flag: "🇦🇺" },
-  { name: "Germany", code: "DE", phoneCode: "+49", flag: "🇩🇪" },
-  { name: "France", code: "FR", phoneCode: "+33", flag: "🇫🇷" },
-  { name: "Japan", code: "JP", phoneCode: "+81", flag: "🇯🇵" },
-  { name: "China", code: "CN", phoneCode: "+86", flag: "🇨🇳" },
-  { name: "Russia", code: "RU", phoneCode: "+7", flag: "🇷🇺" },
-];
 
 // Define the form schema with Zod
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  phone: z.object({
-    countryCode: z.string().default("IN"),
-    number: z.string().min(8, { message: "Phone number must be at least 8 digits." }),
-  }),
+  // phone: z.object({
+  //   countryCode: z.string().default("IN"),
+  //   number: z.string().min(8, { message: "Phone number must be at least 8 digits." }),
+  // }),
+  phone: z.string().min(8, { message: "Phone number must be at least 10 digits." }),
   gender: z.enum(["male", "female", "other"], {
     required_error: "Please select your gender.",
   }),
@@ -84,10 +72,7 @@ const SanskarForm: React.FC<SanskarFormProps> = ({ onSubmit, isLoading = false }
     defaultValues: {
       name: "",
       email: "",
-      phone: {
-        countryCode: "IN",
-        number: "",
-      },
+      phone: "+91"
     },
   });
 
@@ -95,24 +80,25 @@ const SanskarForm: React.FC<SanskarFormProps> = ({ onSubmit, isLoading = false }
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsProcessing(true);
     try {
-      // Get the phone code from the selected country
-      const selectedCountry = countries.find(c => c.code === values.phone.countryCode);
-      const phoneWithCode = `${selectedCountry?.phoneCode} ${values.phone.number}`;
       
       // Convert to UserData type
       const userData: UserData = {
         name: values.name,
         email: values.email,
-        phone: phoneWithCode,
+        phone: values.phone,
         gender: values.gender as UserData['gender'],
         dob: values.dob,
       };
       
       await onSubmit(userData);
+    } catch (error) {
+      console.error("Form Submission Error:", error);
     } finally {
       setIsProcessing(false);
     }
   };
+
+  const today = new Date();
 
   return (
     <div className="sanskar-form animate-entry bg-white/90 backdrop-blur-md" style={{ "--delay": "2" } as React.CSSProperties}>
@@ -160,95 +146,30 @@ const SanskarForm: React.FC<SanskarFormProps> = ({ onSubmit, isLoading = false }
             )}
           />
           
-          <div className="animate-entry" style={{ "--delay": "4.5" } as React.CSSProperties}>
-            <FormLabel className="sanskar-label block mb-1">Phone Number</FormLabel>
-            <div className="flex gap-2">
-              <FormField
-                control={form.control}
-                name="phone.countryCode"
-                render={({ field }) => (
-                  <FormItem className="flex-shrink-0 w-[120px]">
-                    <Popover open={open} onOpenChange={setOpen}>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            aria-expanded={open}
-                            className="w-full justify-between"
-                          >
-                            {field.value ? (
-                              <div className="flex items-center">
-                                <span className="mr-1 text-base">
-                                  {countries.find((country) => country.code === field.value)?.flag}
-                                </span>
-                                <span>{countries.find((country) => country.code === field.value)?.phoneCode}</span>
-                              </div>
-                            ) : (
-                              <span>Select</span>
-                            )}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[200px] p-0">
-                        <Command>
-                          <CommandInput placeholder="Search country..." />
-                          <CommandEmpty>No country found.</CommandEmpty>
-                          <CommandGroup className="max-h-[300px] overflow-y-auto">
-                            {countries.map((country) => (
-                              <CommandItem
-                                key={country.code}
-                                value={country.code}
-                                onSelect={(value) => {
-                                  form.setValue("phone.countryCode", value);
-                                  setOpen(false);
-                                }}
-                              >
-                                <div className="flex items-center">
-                                  <span className="mr-2 text-lg">{country.flag}</span>
-                                  <span>{country.name}</span>
-                                  <span className="ml-auto text-muted-foreground">{country.phoneCode}</span>
-                                </div>
-                                <Check
-                                  className={cn(
-                                    "ml-auto h-4 w-4",
-                                    field.value === country.code ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="phone.number"
-                render={({ field }) => (
-                  <FormItem className="flex-grow">
-                    <FormControl>
-                      <div className="relative">
-                        <Input 
-                          placeholder="Phone number" 
-                          type="tel"
-                          className="sanskar-input pl-8" 
-                          {...field} 
-                        />
-                        <PhoneIcon className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem className="animate-entry" style={{ "--delay": "4.5" } as React.CSSProperties}>
+                <FormLabel className="sanskar-label">Phone Number</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input 
+                      placeholder="Phone number with country code (e.g. +919988776655)" 
+                      type="tel"
+                      className="sanskar-input pl-8" 
+                      {...field} 
+                    />
+                    <PhoneIcon className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  </div>
+                </FormControl>
+                <FormDescription className="text-xs text-gray-500">
+                  Include country code (e.g. +91 for India)
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           
           <FormField
             control={form.control}
