@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 
 // This is the URL for your Google Sheets web app script
 // You need to replace this with your actual deployed Google Script Web App URL
-const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec';
+const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxPLM5ffEDRIiit_P8zu3zhUzECXXZY78GDMR59luW10bXzc-GXSk1jGhliNoPjZ8kPOQ/exec';
 
 export const saveToGoogleSheet = async (
   userData: UserData,
@@ -27,20 +27,32 @@ export const saveToGoogleSheet = async (
 
     console.log('Sending data to Google Sheet:', data);
     
-    // Make the fetch request to the Google Script Web App
-    const response = await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
-      method: 'POST',
-      mode: 'no-cors', // This is required for Google Script Web Apps
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+    // Use XMLHttpRequest instead of fetch to avoid CORS issues with no-cors mode
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', GOOGLE_SHEET_WEBHOOK_URL);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      
+      xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          console.log('Google Sheets response:', xhr.responseText);
+          toast.success('Your information has been saved to our records');
+          resolve(true);
+        } else {
+          console.error('Error saving to Google Sheets. Status:', xhr.status);
+          toast.error('Failed to save your information');
+          resolve(false); // Still resolve to allow local backup to work
+        }
+      };
+      
+      xhr.onerror = function() {
+        console.error('Network error while saving to Google Sheets');
+        toast.error('Network error while saving your information');
+        resolve(false); // Still resolve to allow local backup to work
+      };
+      
+      xhr.send(JSON.stringify(data));
     });
-    
-    // Since no-cors mode doesn't return readable response
-    // we'll just assume it worked if no error was thrown
-    toast.success('Your information has been saved to our records');
-    return true;
   } catch (error) {
     console.error('Error saving data to Google Sheet:', error);
     toast.error('Failed to save your information');

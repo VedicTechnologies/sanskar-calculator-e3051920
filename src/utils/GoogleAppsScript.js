@@ -4,6 +4,14 @@
 
 function doPost(e) {
   try {
+    // Set CORS headers for the preflight request
+    var headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '86400'
+    };
+
     // Parse the incoming JSON data
     const data = JSON.parse(e.postData.contents);
     
@@ -35,25 +43,59 @@ function doPost(e) {
       data.firstSanskarDate
     ]);
     
-    // Return success response
+    // Return success response with CORS headers
     return ContentService.createTextOutput(JSON.stringify({
       'result': 'success',
       'message': 'Data added to spreadsheet'
-    })).setMimeType(ContentService.MimeType.JSON);
+    }))
+    .setMimeType(ContentService.MimeType.JSON)
+    .setHeaders(headers);
     
   } catch(error) {
-    // Return error response
+    // Set CORS headers
+    var headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '86400'
+    };
+    
+    // Return error response with CORS headers
     return ContentService.createTextOutput(JSON.stringify({
       'result': 'error',
       'message': error.toString()
-    })).setMimeType(ContentService.MimeType.JSON);
+    }))
+    .setMimeType(ContentService.MimeType.JSON)
+    .setHeaders(headers);
   }
+}
+
+// Handle OPTIONS requests for CORS preflight
+function doOptions() {
+  var headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Max-Age': '86400'
+  };
+  
+  return ContentService.createTextOutput('')
+    .setMimeType(ContentService.MimeType.TEXT)
+    .setHeaders(headers);
 }
 
 // This function allows the web app to handle GET requests for testing
 function doGet() {
+  var headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  };
+  
   return ContentService.createTextOutput(JSON.stringify({
     'result': 'success',
     'message': 'The web app is running correctly'
-  })).setMimeType(ContentService.MimeType.JSON);
+  }))
+  .setMimeType(ContentService.MimeType.JSON)
+  .setHeaders(headers);
 }
