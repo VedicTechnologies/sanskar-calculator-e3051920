@@ -91,7 +91,7 @@ const SanskarForm: React.FC<SanskarFormProps> = ({ onSubmit, isLoading = false }
 
   return (
     <div className="sanskar-form animate-entry bg-white/90 backdrop-blur-md" style={{ "--delay": "2" } as React.CSSProperties}>
-      <h2 className="sanskar-form-title">Sanskar Calculator by Vedic <Academy></Academy></h2>
+      <h2 className="sanskar-form-title">Sanskar Calculator by Vedic Academy</h2>
       <div className="text-center mb-6 text-sm text-gray-600">
         Enter your details to calculate the auspicious dates for the 16 sanskars
       </div>
