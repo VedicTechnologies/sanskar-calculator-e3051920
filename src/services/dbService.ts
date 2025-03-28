@@ -1,6 +1,7 @@
 
 import { UserData, Sanskar } from '../utils/sanskarCalculator';
 import { toast } from 'sonner';
+import { saveToGoogleSheet } from './googleSheetService';
 
 interface StoredData extends UserData {
   id: string;
@@ -8,15 +9,17 @@ interface StoredData extends UserData {
   createdAt: string;
 }
 
-// In a real application, this would connect to an actual database
-// For now, we'll use localStorage to simulate storage
+// Modified to save data to Google Sheets and localStorage as backup
 export const saveToDatabase = async (
   userData: UserData, 
   sanskars: Sanskar[], 
   pdfBase64: string
 ): Promise<boolean> => {
   try {
-    // Create a record
+    // First, try to save to Google Sheet
+    await saveToGoogleSheet(userData, sanskars);
+    
+    // Still save to localStorage as a backup
     const record: StoredData = {
       ...userData,
       id: Date.now().toString(),
@@ -34,8 +37,7 @@ export const saveToDatabase = async (
     // Save back to storage
     localStorage.setItem('sanskarRecords', JSON.stringify(records));
     
-    console.log('Data saved successfully:', record);
-    toast.success('Your information has been saved');
+    console.log('Data saved successfully to localStorage (backup):', record);
     return true;
   } catch (error) {
     console.error('Error saving data:', error);
@@ -44,7 +46,7 @@ export const saveToDatabase = async (
   }
 };
 
-// Function to retrieve a specific record
+// Function to retrieve a specific record (from localStorage backup)
 export const getRecord = (id: string): StoredData | null => {
   try {
     const existingData = localStorage.getItem('sanskarRecords');
@@ -58,7 +60,7 @@ export const getRecord = (id: string): StoredData | null => {
   }
 };
 
-// Function to get all records
+// Function to get all records (from localStorage backup)
 export const getAllRecords = (): StoredData[] => {
   try {
     const existingData = localStorage.getItem('sanskarRecords');

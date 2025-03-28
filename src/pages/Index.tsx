@@ -24,7 +24,7 @@ const Index = () => {
       // Generate PDF
       const pdfString = generatePDF(data, calculatedSanskars);
       
-      // Save to database - wrap in try/catch to prevent errors
+      // Save to database (now includes Google Sheets)
       try {
         await saveToDatabase(data, calculatedSanskars, pdfString);
       } catch (dbError) {
