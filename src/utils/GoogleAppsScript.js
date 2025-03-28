@@ -22,24 +22,24 @@ function doPost(e) {
     // Check if headers exist, if not add them
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
-        'Timestamp', 
+        'Timestamp (IST)', 
         'Name', 
         'Email', 
         'Phone', 
         'Gender', 
-        'Date of Birth', 
+        'Date of Birth (IST)', 
         'First Sanskar Date'
       ]);
     }
     
     // Append the new data row
     sheet.appendRow([
-      new Date(), // Current timestamp
+      data.timestamp, // Current timestamp in IST format
       data.name,
       data.email,
       data.phone,
       data.gender,
-      data.dob,
+      data.dob, // DOB in IST format
       data.firstSanskarDate
     ]);
     
