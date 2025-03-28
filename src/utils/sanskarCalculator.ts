@@ -112,7 +112,7 @@ export function calculateSanskarDates(userData: UserData): Sanskar[] {
     switch (sanskar.name) {
       case "Garbhadhana":
         // This is conceptual and doesn't have a calculated date
-        calculatedSanskar.calculatedDate = "Ceremonial date determined by astrologer";
+        calculatedSanskar.calculatedDate = "Before Conception";
         calculatedSanskar.calculatedAge = "Before birth";
         break;
         

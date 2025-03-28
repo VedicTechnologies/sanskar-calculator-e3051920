@@ -22,13 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import {
-//   Command,
-//   CommandEmpty,
-//   CommandGroup,
-//   CommandInput,
-//   CommandItem,
-// } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -44,10 +37,6 @@ import { UserData } from '@/utils/sanskarCalculator';
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  // phone: z.object({
-  //   countryCode: z.string().default("IN"),
-  //   number: z.string().min(8, { message: "Phone number must be at least 8 digits." }),
-  // }),
   phone: z.string().min(8, { message: "Phone number must be at least 10 digits." }),
   gender: z.enum(["male", "female", "other"], {
     required_error: "Please select your gender.",
@@ -102,7 +91,7 @@ const SanskarForm: React.FC<SanskarFormProps> = ({ onSubmit, isLoading = false }
 
   return (
     <div className="sanskar-form animate-entry bg-white/90 backdrop-blur-md" style={{ "--delay": "2" } as React.CSSProperties}>
-      <h2 className="sanskar-form-title">Sanskar Calculator</h2>
+      <h2 className="sanskar-form-title">Sanskar Calculator by Vedic <Academy></Academy></h2>
       <div className="text-center mb-6 text-sm text-gray-600">
         Enter your details to calculate the auspicious dates for the 16 sanskars
       </div>

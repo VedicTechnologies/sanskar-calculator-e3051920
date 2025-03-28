@@ -19,7 +19,7 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
   doc.rect(0, 0, 210, 25, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(22);
-  doc.text('Vedic Academy 16 Sanskars', 105, 15, { align: 'center' });
+  doc.text('Sanskars by Vedic Academy', 105, 15, { align: 'center' });
   
   // Add tagline
   doc.setFontSize(14);
@@ -80,7 +80,7 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
     doc.setLineWidth(0.5);
     doc.line(14, 280, 196, 280);
     doc.text(
-      '© 2025 | Vedic Academy Sanskars Calculator - The dates provided are approximations based on traditional guidelines.',
+      '© 2025 Sanskar Calculator | Vedic Academy - The dates provided are approximations based on Sanskar Vidhi & traditional guidelines.',
       105,
       285,
       { align: 'center' }
@@ -99,7 +99,7 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   doc.rect(0, 0, 210, 25, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(22);
-  doc.text('Vedic Academy 16 Sanskars', 105, 15, { align: 'center' });
+  doc.text('Sanskars by Vedic Academy', 105, 15, { align: 'center' });
   
   // Add tagline
   doc.setFontSize(14);
@@ -160,7 +160,7 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
     doc.setLineWidth(0.5);
     doc.line(14, 280, 196, 280);
     doc.text(
-      '© 2025 | Vedic Academy Sanskars Calculator - The dates provided are approximations based on traditional guidelines.',
+      '© 2025 Sanskar Calculator | Vedic Academy - The dates provided are approximations based on Sanskar Vidhi & traditional guidelines.',
       105,
       285,
       { align: 'center' }
