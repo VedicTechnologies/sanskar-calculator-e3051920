@@ -6,6 +6,7 @@ import { UserData, Sanskar, calculateSanskarDates } from '@/utils/sanskarCalcula
 import { generatePDF } from '@/utils/pdfGenerator';
 import { saveToDatabase } from '@/services/dbService';
 import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 const Index = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -24,7 +25,12 @@ const Index = () => {
       const pdfString = generatePDF(data, calculatedSanskars);
       
       // Save to database
-      await saveToDatabase(data, calculatedSanskars, pdfString);
+      try {
+        await saveToDatabase(data, calculatedSanskars, pdfString);
+      } catch (dbError) {
+        console.error('Error saving to database:', dbError);
+        // Non-critical error, we can continue
+      }
       
       // Update state
       setUserData(data);
@@ -33,6 +39,7 @@ const Index = () => {
       setShowResults(true);
     } catch (error) {
       console.error('Error processing data:', error);
+      toast.error('An error occurred while processing your data. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +59,7 @@ const Index = () => {
       <div className="w-full max-w-4xl z-10">
         <div className="text-center mb-8 animate-entry" style={{ "--delay": "1" } as React.CSSProperties}>
           <h1 className="text-4xl sm:text-5xl font-medium text-sanskrit-deep mb-4">
-            16 Sanskars Calculator
+            Vedic Academy Sanskar Calculator
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Discover the auspicious timings for the sixteen sanskars based on your birth details
@@ -72,7 +79,7 @@ const Index = () => {
         
         <div className="text-center mt-10 text-xs text-gray-500 animate-entry" style={{ "--delay": "8" } as React.CSSProperties}>
           <p>The dates provided are approximations based on traditional guidelines.</p>
-          <p>For the most accurate timings, please consult with a qualified astrologer.</p>
+          <p>For the most accurate timings, please consult with a qualified consultants.</p>
         </div>
       </div>
     </div>

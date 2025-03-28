@@ -8,21 +8,22 @@ import { format } from 'date-fns';
 declare module 'jspdf' {
   interface jsPDF {
     autoTable: (options: any) => jsPDF;
-    internal: {
-      getNumberOfPages: () => number;
-    };
   }
 }
 
 export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => {
   const doc = new jsPDF();
-  
+
   // Add decorative header
   doc.setFillColor(212, 175, 55); // Sanskrit gold color
   doc.rect(0, 0, 210, 25, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(22);
-  doc.text('16 Sanskars Calculation', 105, 15, { align: 'center' });
+  doc.text('Vedic Academy 16 Sanskars', 105, 15, { align: 'center' });
+  
+  // Add tagline
+  doc.setFontSize(14);
+  doc.text('Know Correct Time for Each Sanskar', 105, 23, { align: 'center' });
   
   // Add user information
   doc.setTextColor(0, 0, 0);
@@ -46,7 +47,6 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
   // Prepare data for table
   const tableData = sanskars.map(sanskar => [
     sanskar.name,
-    sanskar.description,
     sanskar.calculatedDate,
     sanskar.calculatedAge
   ]);
@@ -54,7 +54,7 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
   // Add the table
   doc.autoTable({
     startY: 85,
-    head: [['Sanskar', 'Description', 'Calculated Date', 'Age']],
+    head: [['Sanskar', 'Proposed Date', 'Age']],
     body: tableData,
     theme: 'grid',
     headStyles: {
@@ -72,7 +72,7 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
   });
   
   // Add a footer
-  const pageCount = doc.internal.getNumberOfPages();
+  const pageCount = doc.internal.pages.length - 1;
   doc.setFontSize(10);
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -80,7 +80,7 @@ export const generatePDF = (userData: UserData, sanskars: Sanskar[]): string => 
     doc.setLineWidth(0.5);
     doc.line(14, 280, 196, 280);
     doc.text(
-      '© 16 Sanskars Calculator - The dates provided are approximations based on traditional guidelines.',
+      '© 2025 | Vedic Academy Sanskars Calculator - The dates provided are approximations based on traditional guidelines.',
       105,
       285,
       { align: 'center' }
@@ -99,7 +99,11 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   doc.rect(0, 0, 210, 25, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(22);
-  doc.text('16 Sanskars Calculation', 105, 15, { align: 'center' });
+  doc.text('Vedic Academy 16 Sanskars', 105, 15, { align: 'center' });
+  
+  // Add tagline
+  doc.setFontSize(14);
+  doc.text('Know Correct Time for Each Sanskar', 105, 23, { align: 'center' });
   
   // Add user information
   doc.setTextColor(0, 0, 0);
@@ -123,7 +127,6 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   // Prepare data for table
   const tableData = sanskars.map(sanskar => [
     sanskar.name,
-    sanskar.description,
     sanskar.calculatedDate,
     sanskar.calculatedAge
   ]);
@@ -131,7 +134,7 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   // Add the table
   doc.autoTable({
     startY: 85,
-    head: [['Sanskar', 'Description', 'Calculated Date', 'Age']],
+    head: [['Sanskar', 'Proposed Date', 'Age']],   
     body: tableData,
     theme: 'grid',
     headStyles: {
@@ -149,7 +152,7 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   });
   
   // Add a footer
-  const pageCount = doc.internal.getNumberOfPages();
+  const pageCount = doc.internal.pages.length - 1;
   doc.setFontSize(10);
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -157,7 +160,7 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
     doc.setLineWidth(0.5);
     doc.line(14, 280, 196, 280);
     doc.text(
-      '© 16 Sanskars Calculator - The dates provided are approximations based on traditional guidelines.',
+      '© 2025 | Vedic Academy Sanskars Calculator - The dates provided are approximations based on traditional guidelines.',
       105,
       285,
       { align: 'center' }
@@ -165,7 +168,7 @@ export const downloadPDF = (userData: UserData, sanskars: Sanskar[]) => {
   }
   
   // Trigger download of the PDF
-  const fileName = `${userData.name.replace(/\s+/g, '_')}_Sanskars.pdf`;
+  const fileName = `${userData.name.replace(/\s+/g, '_')}_VedicAcademy_Sanskar_Calculator.pdf`;
   doc.save(fileName);
   
   return fileName;
